@@ -1,0 +1,27 @@
+test/sim_build/
+test/results.xml
+__pycache__/
+.pytest_cache/
+test/xcheck/ibex/obj_dir/
+test/xcheck/ibex/xcheck_mismatches.txt
+*.vcd
+*.fst
+test/*.result.xml
+sw/build/
+sw/build64/
+sw/build-spike/
+sw/build64-spike/
+sw/build-link-spike.ld
+sw/coremark/src/
+model/__pycache__/
+
+# Tiny Tapeout flow
+runs
+tt_submission
+src/user_config.json
+src/config_merged.json
+test/results.xml
+test/gate_level_netlist.v
+*.fst
+*.fst.hier
+*.vcd

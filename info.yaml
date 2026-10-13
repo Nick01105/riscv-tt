@@ -1,0 +1,101 @@
+# Tiny Tapeout project information
+project:
+  title:        "riscv-tt: pipelined RISC-V with branch prediction and I-cache"
+  author:       ""      # TODO: your name
+  discord:      ""      # TODO: your discord username (optional)
+  description:  "RV32EMAC 5-stage core with BTB/RAS/FTQ prediction, I-cache, QSPI Pmod memories, UART"
+  language:     "SystemVerilog"
+  clock_hz:     50000000
+
+  # How many tiles your design occupies? A single tile is about 167x108 uM.
+  tiles: "8x2"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
+
+  # Your top module name must start with "tt_um_". Make it unique by including your github username:
+  top_module:  "tt_um_rvcore"
+
+  # List your project's source files here.
+  # Source files must be in ./src and you must list each source file separately, one per line.
+  # The package must come first. Don't forget to also update `PROJECT_SOURCES` in test/Makefile.
+  source_files:
+    - "pkg/frontend_pkg.sv"
+    - "backend/rv_alu.sv"
+    - "backend/rv_backend.sv"
+    - "backend/rv_csr.sv"
+    - "backend/rv_lsu.sv"
+    - "backend/rv_muldiv.sv"
+    - "backend/rv_regfile.sv"
+    - "bpu/rv_bimodal.sv"
+    - "bpu/rv_bpu.sv"
+    - "bpu/rv_btb.sv"
+    - "bpu/rv_fold_step.sv"
+    - "bpu/rv_ftq.sv"
+    - "bpu/rv_ghr.sv"
+    - "bpu/rv_hist_fold.sv"
+    - "bpu/rv_ras.sv"
+    - "bpu/rv_sat_counter.sv"
+    - "bpu/rv_tage.sv"
+    - "bpu/rv_tage_hash.sv"
+    - "bpu/rv_tage_table.sv"
+    - "common/rv_axi_rd_slice.sv"
+    - "common/rv_clock_gate.sv"
+    - "common/rv_fifo.sv"
+    - "common/rv_rr_arbiter.sv"
+    - "common/rv_skid_buffer.sv"
+    - "common/rv_sram_1r1w.sv"
+    - "decode/rv_decode_group.sv"
+    - "decode/rv_decoder.sv"
+    - "decode/rv_imm_gen.sv"
+    - "decode/rv_rvc_expand.sv"
+    - "ifu/rv_aligner.sv"
+    - "ifu/rv_axi_rd_master.sv"
+    - "ifu/rv_icache.sv"
+    - "ifu/rv_icache_arrays.sv"
+    - "ifu/rv_ifu.sv"
+    - "ifu/rv_ilen_detect.sv"
+    - "ifu/rv_iq.sv"
+    - "ifu/rv_mshr_file.sv"
+    - "ifu/rv_plru.sv"
+    - "ifu/rv_tag_cmp.sv"
+    - "soc/rv_clint.sv"
+    - "soc/rv_soc.sv"
+    - "soc/rv_spi_mem.sv"
+    - "soc/rv_uart.sv"
+    - "top/rv_core.sv"
+    - "top/rv_frontend.sv"
+    - "top/tt_um_rvcore.sv"
+
+# The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
+# This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
+pinout:
+  # Inputs
+  ui[0]: "HALT (core held in reset, Pmod pins released)"
+  ui[1]: "GPIO_IN0"
+  ui[2]: "GPIO_IN1"
+  ui[3]: "UART_RX"
+  ui[4]: "GPIO_IN2"
+  ui[5]: "GPIO_IN3"
+  ui[6]: "GPIO_IN4"
+  ui[7]: "GPIO_IN5"
+
+  # Outputs
+  uo[0]: "GPIO_OUT0"
+  uo[1]: "GPIO_OUT1"
+  uo[2]: "GPIO_OUT2"
+  uo[3]: "GPIO_OUT3"
+  uo[4]: "UART_TX"
+  uo[5]: "GPIO_OUT4"
+  uo[6]: "GPIO_OUT5"
+  uo[7]: "GPIO_OUT6"
+
+  # Bidirectional pins
+  uio[0]: "FLASH_CS_N"
+  uio[1]: "SPI_MOSI (SD0)"
+  uio[2]: "SPI_MISO (SD1)"
+  uio[3]: "SPI_SCK"
+  uio[4]: "SD2 (held high)"
+  uio[5]: "SD3 (held high)"
+  uio[6]: "PSRAM_A_CS_N"
+  uio[7]: "PSRAM_B_CS_N"
+
+# Do not change!
+yaml_version: 6
