@@ -6,7 +6,7 @@
 // The receiver samples mid-bit after a 2-flop synchronizer; a new byte
 // overwrites an unread one.
 module rv_uart #(
-  parameter logic [15:0] DIV_RESET = 16'd433       // 115200 baud at 50 MHz
+  parameter logic [15:0] DIV_RESET = 16'd216       // 115200 baud at 25 MHz
 ) (
   input  logic        clk,
   input  logic        rst_n,

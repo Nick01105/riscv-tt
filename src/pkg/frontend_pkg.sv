@@ -35,7 +35,7 @@ package frontend_pkg;
   localparam int PADDR_W           = 32;
   localparam int FETCH_BYTES       = 4;
   localparam int DECODE_W          = 1;
-  localparam int IC_BYTES          = 64;    // option C: 64 B direct mapped
+  localparam int IC_BYTES          = 32;    // 64 B (option C), then 32 B after the first hardening run (14 Oct)
   localparam int IC_WAYS           = 1;
   localparam int IC_LINE_BYTES     = 16;
   localparam int IC_MSHRS          = 1;

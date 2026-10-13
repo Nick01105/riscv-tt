@@ -5,7 +5,7 @@ project:
   discord:      ""      # TODO: your discord username (optional)
   description:  "RV32EMAC 5-stage core with BTB/RAS/FTQ prediction, I-cache, QSPI Pmod memories, UART"
   language:     "SystemVerilog"
-  clock_hz:     50000000
+  clock_hz:     25000000
 
   # How many tiles your design occupies? A single tile is about 167x108 uM.
   tiles: "8x2"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2

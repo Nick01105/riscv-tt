@@ -12,7 +12,7 @@
 // stores and unmapped addresses return an access fault. MMIO answers one
 // cycle after the request.
 module rv_soc #(
-  parameter logic [15:0] UART_DIV = 16'd433,
+  parameter logic [15:0] UART_DIV = 16'd216,
   parameter int          SPI_DIV  = 1
 ) (
   input  logic        clk,

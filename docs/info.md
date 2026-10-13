@@ -28,8 +28,8 @@ machine mode) with a decoupled, predicting frontend:
 Memory map: flash `0x0000_0000` (16 MB, execute in place, reset vector 0),
 PSRAM A `0x0100_0000`, PSRAM B `0x0180_0000`, CLINT `0x0200_0000`,
 UART `0x1000_0000` (+0 data, +4 status: bit 0 TX ready, bit 1 RX valid,
-+8 divisor; one bit = divisor + 1 clocks, reset value 433 = 115200 baud at
-50 MHz), GPIO `0x1000_0100` (+0 out, 7 bits; +4 in, 6 bits).
++8 divisor; one bit = divisor + 1 clocks, reset value 216 = 115200 baud at
+25 MHz), GPIO `0x1000_0100` (+0 out, 7 bits; +4 in, 6 bits).
 
 ## How to test
 
@@ -40,7 +40,7 @@ UART `0x1000_0000` (+0 data, +4 status: bit 0 TX ready, bit 1 RX valid,
 2. Hold `ui_in[0]` (HALT) high while programming: the core is held in reset
    and every Pmod pin is an input, so the RP2040 can drive the flash.
 3. Release HALT. The core boots from flash; `crt0` copies initialised data to
-   PSRAM. Output appears on the UART (`uo_out[4]`, 115200 8N1 at 50 MHz).
+   PSRAM. Output appears on the UART (`uo_out[4]`, 115200 8N1 at 25 MHz).
    The test programs print "... ok" and write the result to TOHOST.
 
 GPIO out bits 3:0 appear on `uo_out[3:0]` and bits 6:4 on `uo_out[7:5]`;

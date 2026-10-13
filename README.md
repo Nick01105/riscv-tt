@@ -108,7 +108,7 @@ Another seed: `SEED=7 make test`.
 
 Programming the board: `riscv64-unknown-elf-objcopy -O binary prog.elf prog.bin`,
 write it at offset 0 of the Pmod flash with `ui_in[0]` (HALT) high, then
-release HALT. UART is 115200 8N1 at 50 MHz.
+release HALT. UART is 115200 8N1 at 25 MHz.
 
 ## Layout
 

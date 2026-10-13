@@ -8,7 +8,7 @@
 //   ui_in[3] UART RX       uo_out[4] UART TX
 //   ui_in[2:1], ui_in[7:4] GPIO in      uo_out[3:0], uo_out[7:5] GPIO out
 module tt_um_rvcore #(
-  parameter logic [15:0] UART_DIV = 16'd433       // 115200 baud at 50 MHz (tests use a small value)
+  parameter logic [15:0] UART_DIV = 16'd216       // 115200 baud at 25 MHz (tests use a small value)
 ) (
   input  wire [7:0] ui_in,
   output wire [7:0] uo_out,

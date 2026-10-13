@@ -105,7 +105,7 @@ class Hart:
         self.hpm = [0] * (HPM_LAST + 1)
         self.volatile_csr = None       # set by lockstep: value the RTL read
         self.mtime_rate = 1
-        self.uart_div = 433                            # rv_uart reset value (115200 baud at 50 MHz)
+        self.uart_div = 216                            # rv_uart reset value (115200 baud at 25 MHz)
 
     # ---- memory --------------------------------------------------------------
     def load_image(self, addr, data):
