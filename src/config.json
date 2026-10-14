@@ -15,6 +15,11 @@
   "//": "Users have reported that values up to 80 worked well for them.",
   "PL_TARGET_DENSITY_PCT": 70,
 
+  "//": "riscv-tt: insert antenna diodes at placement time (old strategy 4), not after routing;",
+  "//": "the late repair could not fit diodes next to the latch-array clock nets (DPL-0036).",
+  "GRT_REPAIR_ANTENNAS": 0,
+  "RUN_HEURISTIC_DIODE_INSERTION": 1,
+
   "//": "riscv-tt: use the real SKY130 clock-gate cell in the latch arrays (src/common/rv_clock_gate.sv)",
   "VERILOG_DEFINES": ["SKY130_CELLS"],
 
