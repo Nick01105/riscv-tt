@@ -40,7 +40,7 @@ package frontend_pkg;
   localparam int IC_LINE_BYTES     = 16;
   localparam int IC_MSHRS          = 1;
   localparam int AXI_DATA_W        = 32;
-  localparam int BTB_ENTRIES       = 4;     // area cut of 14 Oct (was 8)
+  localparam int BTB_ENTRIES       = 2;     // area cuts of 14 Oct (8 -> 4 -> 2)
   localparam int RAS_DEPTH         = 2;     // area cut of 14 Oct (was 4)
   localparam int FTQ_DEPTH         = 4;     // >= 3: the youngest committed entry stays live, and a
                                            // straddling 32-bit instruction needs two more (2 deadlocks)
@@ -72,7 +72,7 @@ package frontend_pkg;
   localparam int RAS_CKPT_TOP  = 1;     // FTQ checkpoints the RAS top value as well as the pointer
 `else
   localparam int HPM_W         = 32;    // TT: 32-bit event counters (mhpmcounterNh read 0)
-  localparam int HPM_N         = 2;     // TT: mhpmcounter3-4 (mispredicts, I-cache misses); 5-6 read 0
+  localparam int HPM_N         = 0;     // TT: no event counters (cut of 14 Oct); mhpmcounter3-6 read 0
   localparam int RAS_CKPT_TOP  = 0;     // TT: pointer only (area cut of 14 Oct)
 `endif
   // Memory map (spec section 5). Atomics are legal only in PSRAM.

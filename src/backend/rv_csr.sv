@@ -18,7 +18,7 @@
 module rv_csr #(
   parameter int XLEN  = 32,
   parameter int HPM_W = 32,               // <= XLEN; RV32 *h halves of hpm counters read 0
-  parameter int HPM_N = 4,                // mhpmcounter3..(2+HPM_N) count; the rest of 3-6 read 0
+  parameter int HPM_N = 4,                // mhpmcounter3..(2+HPM_N) count; the rest of 3-6 read 0 (0 allowed)
   parameter bit RVE   = 1'b1
 ) (
   input  logic            clk,
@@ -57,7 +57,8 @@ module rv_csr #(
   logic [3:0]      mcause_q;
   logic [6:0]      minh_q;                       // mcountinhibit bits 6:0 (bit 1 is zero)
   logic [63:0]     mcycle_q, minstret_q;
-  logic [HPM_N*HPM_W-1:0] hpm_q;
+  localparam int HQ = (HPM_N > 0) ? HPM_N : 1;     // storage rows (one unused row when HPM_N = 0)
+  logic [HQ*HPM_W-1:0] hpm_q;
 
   // ---- read ------------------------------------------------------------------
   logic [XLEN-1:0] misa, mstatus, mip, mie, mcause;
@@ -70,7 +71,7 @@ module rv_csr #(
   assign mcause  = {mcause_irq_q, {(XLEN-5){1'b0}}, mcause_q};
 
   logic [4*HPM_W-1:0] hpm_all;          // counters 3-6, unimplemented ones zero
-  assign hpm_all = (4*HPM_W)'(hpm_q);
+  assign hpm_all = (HPM_N > 0) ? (4*HPM_W)'(hpm_q) : '0;
 
   function automatic logic [63:0] hpm64(input logic [4*HPM_W-1:0] v, input logic [1:0] i);
     hpm64 = 64'(v[i*HPM_W +: HPM_W]);
