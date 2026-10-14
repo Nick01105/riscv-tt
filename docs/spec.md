@@ -19,7 +19,7 @@ tables below. Change a value here first, then in the package, in the same commit
 
 | Build | ISA | Privilege | Addressing |
 |---|---|---|---|
-| `TT` (default) | RV32EMAC + Zicsr + Zifencei | M-mode only | physical, no iTLB |
+| `TT` (default) | RV32EAC + Zicsr + Zifencei (M removed 14 Oct, see section 6) | M-mode only | physical, no iTLB |
 | `FULL` (`+define+RV_CFG_FULL`) | RV64IMAC + Zicsr + Zifencei | M-mode only | physical, no iTLB |
 
 The project document asks for RV64IMAC. RV64 doubles the register file
@@ -30,7 +30,8 @@ block that depends on XLEN (RVC expander, immediate generator) supports both.
 
 The TT build is RV32**E** (16 registers, decision of 13 Oct, section 6).
 Instructions that name x16–x31 raise an illegal-instruction exception.
-Software is built with `-march=rv32emac_zicsr_zifencei -mabi=ilp32e`.
+Software is built with `-march=rv32eac_zicsr_zifencei -mabi=ilp32e`: multiply and divide
+are libgcc calls. `HAS_M = 1` in the package brings the M unit back (FULL keeps it).
 
 Compressed (C) is Zca only: no Zcb/Zcmp, and no compressed float/double
 encodings (there is no F or D). Those encodings decode as illegal. HINT

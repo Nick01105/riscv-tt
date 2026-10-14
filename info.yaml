@@ -1,9 +1,9 @@
 # Tiny Tapeout project information
 project:
   title:        "riscv-tt: pipelined RISC-V with branch prediction and I-cache"
-  author:       "Sagnik"
+  author:       ""      # TODO: your name
   discord:      ""      # TODO: your discord username (optional)
-  description:  "RV32EMAC 5-stage core with BTB/RAS/FTQ prediction, I-cache, QSPI Pmod memories, UART"
+  description:  "RV32EAC 5-stage core with BTB/RAS/FTQ prediction, I-cache, QSPI Pmod memories, UART"
   language:     "SystemVerilog"
   clock_hz:     25000000
 

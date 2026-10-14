@@ -4,23 +4,22 @@ This file is used to generate the project datasheet.
 
 ## How it works
 
-riscv-tt is a pipelined RISC-V processor (RV32EMAC + Zicsr + Zifencei,
+riscv-tt is a pipelined RISC-V processor (RV32EAC + Zicsr + Zifencei,
 machine mode) with a decoupled, predicting frontend:
 
-- **Branch prediction**: a 2-stage predictor with a BTB (4 entries), a
+- **Branch prediction**: a 2-stage predictor with a BTB (2 entries), a
   bimodal direction predictor (64 × 2-bit), a return address stack and a
   fetch target queue (FTQ) that holds every predicted block until it
   commits, with history and RAS checkpoints for repair. The same RTL builds
   a TAGE predictor (enabled in the larger simulation-only configuration).
-- **Instruction fetch**: a 64-byte direct-mapped instruction cache with a
+- **Instruction fetch**: a 32-byte direct-mapped instruction cache with a
   non-blocking miss handler and an AXI4 read master (critical word first),
   an aligner for compressed instructions (including ones that cross a fetch
   block), and a decoder.
-- **Backend**: ID → EX → MEM → WB with forwarding, an iterative
-  multiplier/divider, branch resolution in EX, precise exceptions and
-  interrupts taken at the commit point (MEM), LR/SC and AMOs, and the
-  machine CSRs (mcycle, minstret, two event counters: branch mispredicts and
-  I-cache misses).
+- **Backend**: ID → EX → MEM → WB with forwarding, branch resolution in EX,
+  precise exceptions and interrupts taken at the commit point (MEM), LR/SC
+  and AMOs, and the machine CSRs (mcycle, minstret). Multiply and divide run
+  in software (the RTL's iterative M unit is left out of this build to fit).
 - **SoC**: a plain-SPI controller for the QSPI Pmod (flash for code, two
   PSRAMs for data), a SiFive-style CLINT (timer and software interrupts), a
   UART and GPIO.

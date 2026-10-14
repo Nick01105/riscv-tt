@@ -35,6 +35,14 @@ def rve():
     return not params().get("RV_CFG_FULL")
 
 
+def has_m():
+    return bool(params().get("RV_CFG_FULL"))          # TT build: no M extension (frontend_pkg::HAS_M = 0)
+
+
+def is_m(word):
+    return (word & 0x7F) in (0x33, 0x3B) and (word >> 25) == 1
+
+
 def uses_high_reg(exp):
     return ((exp.get("rd_we") and exp["rd"] >= 16) or (exp.get("rs1_en") and exp["rs1"] >= 16)
             or (exp.get("rs2_en") and exp["rs2"] >= 16))
@@ -61,6 +69,8 @@ async def field_vectors(dut):
         if rve() and uses_high_reg(exp):
             exp = ILLEGAL_FIELDS
             e_illegal += 1
+        elif not has_m() and is_m(word):
+            exp = ILLEGAL_FIELDS
         for k, v in exp.items():
             want = ENUM[v] if isinstance(v, str) else v
             if k == "imm":
@@ -79,7 +89,10 @@ async def legality_vs_objdump(dut):
     for word, mnem, ops in vecs:
         await decode(dut, word)
         ours_legal = not u(dut.illegal)
-        if mnem and rve() and HIGH_REG.search(ops):
+        if mnem and not has_m() and is_m(word):
+            assert not ours_legal, f"{word:#010x} ({mnem}): M is not implemented in this build"
+            priv += 1
+        elif mnem and rve() and HIGH_REG.search(ops):
             assert not ours_legal, f"{word:#010x} ({mnem} {ops}) names x16-x31 on RV32E"
             high += 1
         elif mnem and mnem.startswith(NOT_IMPLEMENTED):

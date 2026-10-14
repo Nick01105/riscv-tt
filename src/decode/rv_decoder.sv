@@ -1,6 +1,6 @@
 // rv_decoder - one 32-bit instruction (compressed ones already expanded by
 // rv_rvc_expand) to a uop_t. Covers RV32/RV64 IMAC (or RV32E when
-// frontend_pkg::RVE is set) + Zicsr + Zifencei with M-mode system
+// frontend_pkg::RVE is set; M only when frontend_pkg::HAS_M) + Zicsr + Zifencei with M-mode system
 // instructions; XLEN comes from frontend_pkg.
 //
 // Conventions:
@@ -179,7 +179,7 @@ module rv_decoder (
           if (f7 == 7'b0000001) begin                        // M extension
             u.fu = f3[2] ? frontend_pkg::FU_DIV : frontend_pkg::FU_MUL;
             u.op = {2'b00, f3};
-            legal = (opc == OP_OP) || (RV64 && (f3 == 3'd0 || f3[2]));
+            legal = (frontend_pkg::HAS_M != 0) && ((opc == OP_OP) || (RV64 && (f3 == 3'd0 || f3[2])));
           end else begin
             u.fu = frontend_pkg::FU_ALU;
             case ({f7, f3})

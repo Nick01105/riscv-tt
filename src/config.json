@@ -13,7 +13,7 @@
 
   "//": "PL_TARGET_DENSITY_PCT - You can increase this if Global Placement fails with error GPL-0302.",
   "//": "Users have reported that values up to 80 worked well for them.",
-  "PL_TARGET_DENSITY_PCT": 75,
+  "PL_TARGET_DENSITY_PCT": 70,
 
   "//": "riscv-tt: use the real SKY130 clock-gate cell in the latch arrays (src/common/rv_clock_gate.sv)",
   "VERILOG_DEFINES": ["SKY130_CELLS"],

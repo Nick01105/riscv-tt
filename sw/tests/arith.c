@@ -30,11 +30,11 @@ int main(void) {
             int32_t a = vs[i], b = vs[j];
             uint32_t ua = (uint32_t)a, ub = (uint32_t)b;
             CHECK(ua * ub == mul_slow(ua, ub));
-#if __riscv_xlen == 32
+#if __riscv_xlen == 32 && defined(__riscv_mul)
             uint32_t hu;
             __asm__ volatile("mulhu %0, %1, %2" : "=r"(hu) : "r"(ua), "r"(ub));
             CHECK(hu == mulhu_slow(ua, ub));
-#else
+#else                                   // no M (TT build): libgcc's 64-bit multiply
             CHECK((uint32_t)(((uint64_t)ua * ub) >> 32) == mulhu_slow(ua, ub));
 #endif
             if (b != 0) {
@@ -43,6 +43,7 @@ int main(void) {
                 }
                 CHECK((ua / ub) * ub + (ua % ub) == ua);
             }
+#ifdef __riscv_mul                      // the M instructions' own corner cases (div by 0, overflow)
             int32_t q, r;
             uint32_t qu, ru;
 #if __riscv_xlen == 32
@@ -61,6 +62,7 @@ int main(void) {
             } else if (a == (int32_t)0x80000000 && b == -1) {
                 CHECK(q == a && r == 0);
             }
+#endif
             acc += ua * 3 + (ua >> (j & 31)) + (uint32_t)(a >> (i & 31)) + (ua < ub) + (a < b);
         }
     }

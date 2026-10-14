@@ -10,7 +10,7 @@
 #define HAS_STDIO 0
 #define HAS_PRINTF 0
 #define COMPILER_VERSION "GCC" __VERSION__
-#define COMPILER_FLAGS "-O2 -march=rv32emac_zicsr_zifencei"
+#define COMPILER_FLAGS "-O2 -march=rv32eac_zicsr_zifencei"
 #define MEM_LOCATION "STACK"
 
 typedef signed short   ee_s16;

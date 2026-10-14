@@ -1,4 +1,4 @@
-# Build the riscv-tt test programs (RV32E bare metal).
+# Build the riscv-tt test programs (RV32EAC bare metal; the TT silicon has no M).
 #   make            all programs in tests/
 #   make FULL=1     RV64IMAC versions for the FULL frontend tests
 #   make SPIKE=1    variants for cross-checking against Spike (flash at 0x2000_0000)
@@ -12,7 +12,7 @@ ifeq ($(FULL),1)
 ARCH := -march=rv64imac_zicsr_zifencei -mabi=lp64 -mcmodel=medany
 OUT := build64
 else
-ARCH := -march=rv32emac_zicsr_zifencei -mabi=ilp32e
+ARCH := -march=rv32eac_zicsr_zifencei -mabi=ilp32e
 OUT := build
 endif
 ifeq ($(SPIKE),1)

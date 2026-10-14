@@ -23,7 +23,7 @@ XREG = re.compile(r"\bx(\d+)\s+0x([0-9a-f]+)")
 
 
 XLEN = int(os.environ.get("XLEN", "32"))
-ISA = "rv32emac_zicsr_zifencei" if XLEN == 32 else "rv64imac_zicsr_zifencei"
+ISA = "rv32eac_zicsr_zifencei" if XLEN == 32 else "rv64imac_zicsr_zifencei"
 
 
 def spike_trace(elf):

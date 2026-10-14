@@ -19,7 +19,8 @@ module rv_csr #(
   parameter int XLEN  = 32,
   parameter int HPM_W = 32,               // <= XLEN; RV32 *h halves of hpm counters read 0
   parameter int HPM_N = 4,                // mhpmcounter3..(2+HPM_N) count; the rest of 3-6 read 0 (0 allowed)
-  parameter bit RVE   = 1'b1
+  parameter bit RVE   = 1'b1,
+  parameter bit HAS_M = 1'b1
 ) (
   input  logic            clk,
   input  logic            rst_n,
@@ -64,7 +65,7 @@ module rv_csr #(
   logic [XLEN-1:0] misa, mstatus, mip, mie, mcause;
   logic [1:0]      mxl;
   assign mxl     = X32 ? 2'd1 : 2'd2;
-  assign misa    = {mxl, {(XLEN-28){1'b0}}, 26'(1 << 12 | 1 << 2 | 1 << 0 | (RVE ? (1 << 4) : (1 << 8)))};
+  assign misa    = {mxl, {(XLEN-28){1'b0}}, 26'((HAS_M ? (1 << 12) : 0) | 1 << 2 | 1 << 0 | (RVE ? (1 << 4) : (1 << 8)))};
   assign mstatus = XLEN'({mpie_q, 3'b000, mie_q, 3'b000}) | XLEN'(32'h1800);
   assign mip     = XLEN'({mtip_i, 3'b000, msip_i, 3'b000});
   assign mie     = XLEN'({mtie_q, 3'b000, msie_q, 3'b000});

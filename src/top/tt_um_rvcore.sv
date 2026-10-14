@@ -1,4 +1,4 @@
-// tt_um_rvcore - Tiny Tapeout top: riscv-tt RV32EMAC core with the QSPI Pmod
+// tt_um_rvcore - Tiny Tapeout top: riscv-tt RV32EAC core with the QSPI Pmod
 // (flash + 2 PSRAMs, plain SPI), UART and GPIO.
 //
 //   uio[0] CS flash   uio[1] MOSI (SD0)  uio[2] MISO (SD1, input)  uio[3] SCK

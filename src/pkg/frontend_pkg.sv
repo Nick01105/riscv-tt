@@ -69,10 +69,12 @@ package frontend_pkg;
 `ifdef RV_CFG_FULL
   localparam int HPM_W         = 64;    // mhpmcounter width
   localparam int HPM_N         = 4;     // mhpmcounter3..6 implemented
+  localparam int HAS_M         = 1;     // M extension (multiply/divide)
   localparam int RAS_CKPT_TOP  = 1;     // FTQ checkpoints the RAS top value as well as the pointer
 `else
   localparam int HPM_W         = 32;    // TT: 32-bit event counters (mhpmcounterNh read 0)
   localparam int HPM_N         = 0;     // TT: no event counters (cut of 14 Oct); mhpmcounter3-6 read 0
+  localparam int HAS_M         = 0;     // TT: no M extension (routing cut of 14 Oct): RV32EAC, mul/div in software
   localparam int RAS_CKPT_TOP  = 0;     // TT: pointer only (area cut of 14 Oct)
 `endif
   // Memory map (spec section 5). Atomics are legal only in PSRAM.

@@ -12,7 +12,8 @@ static void target(void) { hits++; }
 
 int main(void) {
     for (int pass = 0; pass < 4; pass++) {
-        unsigned long r, s, t;
+        unsigned long r, s, t = 0;
+        (void)t;                              // only used by the M sequences
         volatile uint32_t *p = buf;
 
         // three writes to one register, then a use of the youngest
@@ -46,6 +47,7 @@ int main(void) {
         fp();
         CHECK(hits == h0 + 1);
 
+#ifdef __riscv_mul                          // M builds only (the TT silicon has no M)
         // multiply and divide results used at once (rs1 and rs2)
         __asm__ volatile("li %0, 6\n\tli %1, 7\n\tmul %2, %0, %1\n\tsub %2, %0, %2" : "=&r"(r), "=&r"(s), "=&r"(t));
         CHECK((long)t == 6 - 42);
@@ -53,6 +55,7 @@ int main(void) {
         CHECK(t == 7 + 14);
         __asm__ volatile("li %0, 100\n\tli %1, 7\n\tremu %2, %0, %1\n\tmul %2, %2, %2" : "=&r"(r), "=&r"(s), "=&r"(t));
         CHECK(t == 4);
+#endif
 
         // CSR read used at once
         __asm__ volatile("csrw mscratch, %2\n\tcsrr %0, mscratch\n\tadd %1, %2, %0"

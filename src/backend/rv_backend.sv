@@ -166,10 +166,23 @@ module rv_backend (
   logic            md_busy, md_done, md_start;
   logic [XLEN-1:0] md_y;
   assign md_start = ex_v_q && is_md && !hazard && !md_busy && !md_done;
-  rv_muldiv #(.XLEN(XLEN)) u_md (
-    .clk, .rst_n, .kill_i(mem_redir), .start_i(md_start), .f3_i(ex_u_q.f3), .word_i(ex_u_q.word_op),
-    .a_i(a), .b_i(b), .busy_o(md_busy), .done_o(md_done), .ack_i(ex_fire), .y_o(md_y)
-  );
+  generate
+    if (frontend_pkg::HAS_M != 0) begin : g_md
+      rv_muldiv #(.XLEN(XLEN)) u_md (
+        .clk, .rst_n, .kill_i(mem_redir), .start_i(md_start), .f3_i(ex_u_q.f3), .word_i(ex_u_q.word_op),
+        .a_i(a), .b_i(b), .busy_o(md_busy), .done_o(md_done), .ack_i(ex_fire), .y_o(md_y)
+      );
+    end else begin : g_no_md
+      // no M extension: the decoder makes every MUL/DIV encoding illegal
+      assign md_busy = 1'b0;
+      assign md_done = 1'b0;
+      assign md_y    = '0;
+      /* verilator lint_off UNUSEDSIGNAL */
+      logic unused_md;
+      assign unused_md = md_start;
+      /* verilator lint_on UNUSEDSIGNAL */
+    end
+  endgenerate
 
   logic ex_ready, mem_free, irq_pending, irq_mark;
   logic [3:0] irq_cause;
@@ -316,7 +329,7 @@ module rv_backend (
   assign ev[2] = !uop_valid_i[0] && !redir_any && (!ex_v_q || ex_fire);
   assign ev[3] = lsu_stall;
 
-  rv_csr #(.XLEN(XLEN), .HPM_W(frontend_pkg::HPM_W), .HPM_N(frontend_pkg::HPM_N), .RVE(frontend_pkg::RVE != 0)) u_csr (
+  rv_csr #(.XLEN(XLEN), .HPM_W(frontend_pkg::HPM_W), .HPM_N(frontend_pkg::HPM_N), .RVE(frontend_pkg::RVE != 0), .HAS_M(frontend_pkg::HAS_M != 0)) u_csr (
     .clk, .rst_n,
     .addr_i(csr_addr), .rdata_o(csr_old), .exists_o(csr_exists),
     .we_i(commit && m_csr && csr_wr), .wdata_i(csr_new),

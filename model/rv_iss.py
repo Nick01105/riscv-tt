@@ -74,6 +74,7 @@ class Retire:
 class Hart:
     xlen: int = 32
     rve: bool = True
+    rvm: bool | None = None          # M extension; None = as the build: TT (RV32E) has none, FULL has it
     reset_pc: int = 0
     flash_base: int = FLASH_BASE     # 0x2000_0000 for the Spike cross-check builds
     tohost_addr: int = TOHOST        # 0x01FF_F000 (in PSRAM) for the Spike builds
@@ -95,7 +96,9 @@ class Hart:
         self.gpio_out = 0
         self.gpio_in = 0
         mxl = 1 if self.xlen == 32 else 2
-        ext = sum(1 << (ord(c) - 65) for c in ("AMC" + ("E" if self.rve else "I")))
+        if self.rvm is None:
+            self.rvm = not self.rve
+        ext = sum(1 << (ord(c) - 65) for c in ("AC" + ("M" if self.rvm else "") + ("E" if self.rve else "I")))
         self.csr = {CSR["mstatus"]: 0, CSR["misa"]: (mxl << (self.xlen - 2)) | ext, CSR["mie"]: 0,
                     CSR["mtvec"]: 0, CSR["mscratch"]: 0, CSR["mepc"]: 0, CSR["mcause"]: 0,
                     CSR["mtval"]: 0, CSR["mcountinhibit"]: 0, CSR["mvendorid"]: 0, CSR["marchid"]: 0,
@@ -428,6 +431,8 @@ class Hart:
             self.wr(rd, r, rec)
         elif op == 0x33:
             need(rd, rs1, rs2)
+            if f7 == 1 and not self.rvm:
+                raise Trap(ILLEGAL)
             if f7 == 1:
                 r = self._muldiv(f3, a, b, X)
             elif f7 == 0 or (f7 == 0x20 and f3 in (0, 5)):
@@ -438,6 +443,8 @@ class Hart:
         elif op == 0x3B and rv64:
             need(rd, rs1, rs2)
             a32, b32 = a & 0xFFFFFFFF, b & 0xFFFFFFFF
+            if f7 == 1 and not self.rvm:
+                raise Trap(ILLEGAL)
             if f7 == 1 and f3 in (0, 4, 5, 6, 7):
                 r = sext(self._muldiv(f3, sext(a32, 32) & 0xFFFFFFFF, sext(b32, 32) & 0xFFFFFFFF, 32), 32)
             elif f7 == 0 and f3 == 0:

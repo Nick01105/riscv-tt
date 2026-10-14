@@ -10,7 +10,7 @@ Two builds come from the same RTL:
 
 | | TT (taped out) | FULL (simulation, `+define+RV_CFG_FULL`) |
 |---|---|---|
-| ISA | RV32EMAC + Zicsr + Zifencei, M-mode | RV64IMAC + Zicsr + Zifencei, M-mode |
+| ISA | RV32EAC + Zicsr + Zifencei, M-mode (mul/div in software) | RV64IMAC + Zicsr + Zifencei, M-mode |
 | Frontend | 4-byte fetch, 1-wide decode | 16-byte fetch, 4-wide decode |
 | Prediction | BTB 4, bimodal 64, RAS 2, FTQ 4 | BTB 1024, TAGE (2048 + 4 × 512), RAS 16, FTQ 16 |
 | I-cache | 64 B direct mapped, 1 MSHR | 32 KB 4-way, 4 MSHRs |

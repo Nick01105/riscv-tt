@@ -13,7 +13,7 @@ if [ "$SPIKE" = 1 ]; then          # cross-check variant (see sw/Makefile)
   out="$here/../build-spike"; lds="$here/../build-link-spike.ld"; extra="-DSPIKE"
 fi
 mkdir -p "$out"
-${P}gcc -march=rv32emac_zicsr_zifencei -mabi=ilp32e -O2 -g -ffreestanding -fno-builtin -nostdlib -nostartfiles \
+${P}gcc -march=rv32eac_zicsr_zifencei -mabi=ilp32e -O2 -g -ffreestanding -fno-builtin -nostdlib -nostartfiles \
   -I"$here/port" -I"$here/src" -I"$here/../common" -DITERATIONS=$iters -DPERFORMANCE_RUN=1 $extra \
   -T "$lds" -o "$out/coremark.elf" \
   "$here/../common/crt0.S" "$here/../common/rt.c" "$here/port/core_portme.c" \
